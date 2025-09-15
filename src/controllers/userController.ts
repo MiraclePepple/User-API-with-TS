@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/userModel";
 
+
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await User.findAll();
@@ -16,7 +17,8 @@ export const createUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
   try {
-    const newUser = await User.create({ name, email, password });
+    const photoUrl = (req.file as any)?.path || null;
+    const newUser = await User.create({ name, email, password, profileImage: photoUrl });
     res.status(201).json(newUser);
   } catch (error) {
     console.error("Error creating user:", error);
@@ -39,6 +41,25 @@ export const updateUser = async (req: Request, res: Response) => {
     res.json(user);
   } catch (error) {
     console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+export const updateUserProfileImage = async (req: Request, res: Response) => {
+  const userId = req.params.id;
+  const photoUrl = (req.file as any)?.path || null;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    user.set({ profileImage: photoUrl });
+    await user.save();
+    res.json(user);
+  } catch (error) {
+    console.error("Error updating user profile image:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
