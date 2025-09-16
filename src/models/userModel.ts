@@ -23,6 +23,11 @@
    profileImage: {
      type: DataTypes.STRING,
      allowNull: true
+   },
+   role: {
+     type: DataTypes.ENUM('user', 'admin'),
+     defaultValue: 'user',
+     allowNull: false
    }
  });
 
