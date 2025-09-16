@@ -9,3 +9,4 @@ export const adminAuth = (req: AdminRequest, res: Response, next: NextFunction) 
   }
   next();
 };
+

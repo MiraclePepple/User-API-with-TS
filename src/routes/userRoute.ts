@@ -6,7 +6,7 @@ import { adminAuth } from "../middlewares/adminAuth";
 
 const router = Router();
 
-router.get("/get-users", authenticateToken, adminAuth,getUsers);
+router.get("/get-users", authenticateToken, adminAuth, getUsers);
 router.post("/create-user", upload.single("file"), createUser);
 router.put("/update-user/:id", authenticateToken, adminAuth, updateUser);
 router.put("/update-user-profile-image/:id", authenticateToken, adminAuth, upload.single("file"), updateUserProfileImage);
